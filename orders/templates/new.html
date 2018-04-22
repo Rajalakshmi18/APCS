@@ -1,0 +1,140 @@
+{% extends 'layout.html' %}
+
+{% load widget_tweaks %}
+
+{% block title %} Add Orders {% endblock %}
+
+{% block body %}
+<script type="text/javascript">
+function generateAmount() {
+
+    var TotalCost = 47890000;
+    var TotalvCPU = 4691;
+    var TotalRAM = 15374;
+    var TotalStorageCost = 7500000;
+    var TotalCapacity = 245.16 ;
+
+    //Quota Cost
+    var ratio = (TotalvCPU/TotalRAM)
+    var TotalCostRAM =(TotalCost/(1+ratio))
+    var OneGBRAM= (TotalCostRAM/TotalRAM)
+    var OnevCPU = ((ratio* TotalCostRAM)/TotalvCPU)
+    var storageCost =(TotalStorageCost/TotalCapacity)
+    var QuotaCost = OneGBRAM * document.getElementById("id_RAM").value + OnevCPU*document.getElementById("id_vCPU").value + storageCost * document.getElementById("id_storage").value;
+
+    //Network Cost
+    var TotalNetworkCost = 48644607;
+    var PerAppUtilization = document.getElementById("id_RAM").value * document.getElementById("id_vCPU").value;
+    var PerAppUtilRatio = PerAppUtilization/(TotalvCPU*TotalRAM);
+    var PerAppNetworkCost =  PerAppUtilRatio * TotalNetworkCost ;
+
+    //Operational Cost
+    var CoLocationCost = 11132040;
+    var PowerCost = 8741000;
+    var PerAppOpCost= PerAppUtilRatio *  (CoLocationCost + PowerCost);
+
+    //Total Cost
+    totalamount = QuotaCost + PerAppNetworkCost + PerAppOpCost
+
+    document.getElementById("id_amount").value =totalamount
+}
+
+</script>
+
+                <section>
+					<div class="section-body">
+						<div class="row">
+
+							<!-- BEGIN  - FORM -->
+							<div class="col-lg-12">
+								<div class="card">
+									<div class="card-head style-primary">
+										<header>Add Order</header>
+										<div class="tools">
+											<a class="btn btn-icon-toggle btn-collapse"><i class="fa fa-angle-down"></i></a>
+											<a class="btn btn-icon-toggle btn-close"><i class="md md-close"></i></a>
+										</div>
+									</div>
+									<div class="card-body">
+
+										<form class="form" role="form" action="" method="post"> {% csrf_token %}
+
+											<div class="row">
+												<div class="col-sm-6">
+													<header>Department Info</header>
+													<div class="form-group floating-label">
+														{{ form.dept_name | add_class:'form-control' }}
+														<label for="regular2">Department Name</label>
+													</div>
+													<div class="form-group floating-label">
+														{{ form.app_name | add_class:'form-control' }}
+														<label for="regular2"> Application Name</label>
+													</div>
+													<div class="form-group floating-label">
+														{{ form.function | add_class:'form-control' }}
+														<label for="regular2">Function </label>
+													</div>
+												</div>
+												<div class="col-sm-6">
+													<header >Order Info</header>
+													<div class="form-group">
+														{{ form.vCPU | add_class:'form-control'}}
+														<label for="regular2"> vCPU</label>
+													</div>
+													<div class="form-group floating-label">
+														{{ form.RAM | add_class:'form-control' }}
+														<label for="regular2">RAM(in GB)</label>
+													</div>
+													<div class="row">
+														<div class="col-sm-6">
+															<div class="form-group floating-label">
+																{{ form.storage| add_class:'form-control' }}
+																<label for=" ">Storage(in TB)</label>
+															</div>
+														</div>
+														<div class="col-sm-6">
+															<div class="form-group floating-label">
+                                                                <input class="form-control" id="id_amount" name="amount" required="" type="number">
+
+
+                                                                <label for="regular2">Amount</label>
+															</div>
+                                                            <div>
+                                                                <input type="button" class="btn" value="Generate" onclick= "generateAmount()">
+                                                            </div>
+														</div>
+													</div>
+												</div>
+												<div class="col-md-12">
+													<hr>
+													<label class="radio-inline radio-styled col-sm-2">
+														<b>Order Status :</b>
+													</label>
+													<div class="col-md-10">
+
+                                                        {% for radio in form.order_status %}
+                                                            <label class="radio-inline radio-styled">
+                                                                {{ radio }}
+                                                            </label>
+                                                        {% endfor %}
+
+													</div>
+												</div>
+												<div class="col-md-12">
+													<hr>
+							 						<div class="card-actionbar-row">
+														<input type="submit" class="btn btn-flat btn-primary ink-reaction" value="SUBMIT">
+													</div>
+												</div>
+											</div>
+										</form>
+									</div><!--end .card-body -->
+								</div><!--end .card -->
+							</div><!--end .col -->
+							<!-- END FORM - TIME ON SITE -->
+
+						</div><!--end .row -->
+					</div><!--end .section-body -->
+				</section>
+
+{% endblock %}
