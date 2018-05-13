@@ -1,0 +1,129 @@
+{% extends 'layout.html' %}
+
+{% load widget_tweaks %}
+
+{% block title %} Add Costs {% endblock %}
+
+{% block body %}
+
+
+                <section>
+					<div class="section-body">
+						<div class="row">
+
+							<!-- BEGIN  - FORM -->
+							<div class="col-lg-12">
+								<div class="card">
+									<div class="card-head style-primary">
+										<header>Add Costs</header>
+										<div class="tools">
+											<a class="btn btn-icon-toggle btn-collapse"><i class="fa fa-angle-down"></i></a>
+											<a class="btn btn-icon-toggle btn-close"><i class="md md-close"></i></a>
+										</div>
+									</div>
+									<div class="card-body">
+
+										<form class="form" role="form" action="" method="post" > {% csrf_token %}
+
+											<div class="row">
+												<div class="col-sm-6">
+													<header>Infrastructure Cost</header>
+													<div class="form-group floating-label">
+														{{ form.totalDC | add_class:'form-control' }}
+														<label for="regular2">Total DC Cost</label>
+													</div>
+													<div class="form-group floating-label">
+														{{ form.totalServer | add_class:'form-control' }}
+														<label for="regular2"> Total Server Cost</label>
+													</div>
+                                                    <div class="form-group floating-label">
+														{{ form.totalStorageCost | add_class:'form-control' }}
+														<label for="regular2">Total Storage Cost </label>
+													</div>
+													<div class="form-group floating-label">
+														{{ form.totalNetwork | add_class:'form-control' }}
+														<label for="regular2">Total Network Cost </label>
+													</div>
+
+													<div class="form-group floating-label">
+														{{ form.LMF | add_class:'form-control' }}
+														<label for="regular2">License, Maintainence And Facilty Cost</label>
+													</div>
+												</div>
+
+
+                                                <div class="col-sm-6">
+													<header>Infrastructure Capacity</header>
+													<div class="form-group floating-label">
+														{{ form.totalvCPU | add_class:'form-control' }}
+														<label for="regular2">Total vCPUs</label>
+													</div>
+													<div class="form-group floating-label">
+														{{ form.totalRAM | add_class:'form-control' }}
+														<label for="regular2"> Total RAM</label>
+													</div>
+													<div class="form-group floating-label">
+														{{ form.totalStorage | add_class:'form-control' }}
+														<label for="regular2">Total Storage Capacity </label>
+													</div>
+												</div>
+
+
+                                                <div class="col-sm-6">
+													<header>OS Licensing Cost</header>
+													<div class="form-group floating-label">
+														{{ form.microsoft | add_class:'form-control' }}
+														<label for="regular2">Microsoft</label>
+													</div>
+													<div class="form-group floating-label">
+														{{ form.redhat | add_class:'form-control' }}
+														<label for="regular2"> Redhat</label>
+													</div>
+													<div class="form-group floating-label">
+														{{ form.suse | add_class:'form-control' }}
+														<label for="regular2">SUSE</label>
+													</div>
+
+													<div class="form-group floating-label">
+														{{ form.otherOS | add_class:'form-control' }}
+														<label for="regular2">Other OS</label>
+													</div>
+												</div>
+
+
+                                                <div class="col-sm-6">
+													<header>Database Licensing Cost</header>
+													<div class="form-group floating-label">
+														{{ form.oracle | add_class:'form-control' }}
+														<label for="regular2">Oracle</label>
+													</div>
+													<div class="form-group floating-label">
+														{{ form.sql | add_class:'form-control' }}
+														<label for="regular2"> SQL</label>
+													</div>
+                                                </div>
+
+                                                	<div class="col-md-12">
+													<hr>
+							 						<div class="card-actionbar-row">
+														<input type="submit" class="btn btn-flat btn-primary ink-reaction" value="SUBMIT">
+													</div>
+												</div>
+
+											</div>
+										</form>
+									</div><!--end .card-body -->
+								</div><!--end .card -->
+							</div><!--end .col -->
+							<!-- END FORM - TIME ON SITE -->
+
+						</div><!--end .row -->
+					</div><!--end .section-body -->
+
+
+
+
+				</section>
+
+
+{% endblock %}

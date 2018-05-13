@@ -1,22 +1,26 @@
 from django.shortcuts import render, redirect
-from .models import OrderItems
+from .models import OrderItems1
+from .models import TotalCosts
 from .forms import OrderForm
+from .forms import TotalForm
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 
+
 @login_required
 def index(request):
-    orders = OrderItems.objects.all()
+    orders = OrderItems1.objects.all()
     return render(request, 'index.html', {'orders': orders})
 
 @login_required
 def show(request, order_id):
-    order = OrderItems.objects.filter(id=order_id)
+    order = OrderItems1.objects.filter(id=order_id)
     return render(request, 'show.html', {'order': order})
 
 @login_required
 def new(request):
     if request.POST:
+        total = TotalCosts.objects.order_by('id')[0]
         form = OrderForm(request.POST)
         if form.is_valid():
             if form.save():
@@ -27,11 +31,13 @@ def new(request):
             return redirect('/', messages.error(request, 'Form is not valid', 'alert-danger'))
     else:
         form = OrderForm()
-        return render(request, 'new.html', {'form':form})
+        total = TotalCosts.objects.order_by('id')[0]
+        print(total.totalServer)
+        return render(request, 'new.html', {'form':form, 'form2':total } )
 
 @login_required
 def edit(request, order_id):
-    order = OrderItems.objects.get(id=order_id)
+    order = OrderItems1.objects.get(id=order_id)
     if request.POST:
         form = OrderForm(request.POST, instance=order)
         if form.is_valid():
@@ -47,6 +53,23 @@ def edit(request, order_id):
 
 @login_required
 def destroy(request, order_id):
-    order = OrderItems.objects.get(id=order_id)
+    order = OrderItems1.objects.get(id=order_id)
     order.delete()
     return redirect('/', messages.success(request, 'Order was successfully deleted.', 'alert-success'))
+
+@login_required
+def total(request):
+    #total = TotalCosts.objects.order_by('id')[0]
+    #total.delete()
+    if request.POST:
+        form = TotalForm(request.POST)
+        if form.is_valid():
+            if form.save():
+                return redirect('/', messages.success(request, 'Costs were successfully added.', 'alert-success'))
+            else:
+                return redirect('/', messages.error(request, 'Data is not saved', 'alert-danger'))
+        else:
+            return redirect('/', messages.error(request, 'Form is not valid', 'alert-danger'))
+    else:
+        form = TotalForm()
+        return render(request, 'total.html', {'form':form})
