@@ -17,7 +17,6 @@ function GetSelectedItem(el)
 
 function generateAmount() {
 
-    document.getElementById("demo").innerHTML ={{ form2.totalDC}};
 
     var TotalCost={{ form2.totalDC }};
     var TotalvCPU ={{ form2.totalvCPU }};
@@ -44,52 +43,42 @@ function generateAmount() {
 
 
     //os
-/*
+
     os=GetSelectedItem("id_os");
-    document.getElementById("demo").innerHTML=os;
 
     if(os === "Windows") {
-        document.getElementById("demo").innerHTML = "Its windows";
-        var windowsCost={{ form2.windows }};
+        var windowsCost={{ form2.microsoft }};
     }
     else if(os ==="RHEL"){
-        document.getElementById("demo").innerHTML = "Its RHEL";
         var rhelcost={{ form2.redhat }};
     }
     else if(os ==="Suse")
     {
         var suseCost={{ form2.suse }}
-        document.getElementById("demo").innerHTML = "Its suse"
     }
     else {
-        document.getElementById("demo").innerHTML = "Its Other"
+    var other=0
     }
 
-/*
     //dr
 
     dr=GetSelectedItem("id_dr");
     if(dr ==="Yes") {
         var a=1;
-        //document.getElementById("demo").innerHTML = "Its Yes";
     }
     else {
         var b=2;
-        //document.getElementById("demo").innerHTML = "Its No";
     }
-/*
 
     //db
     db=GetSelectedItem("id_db");
     if(os ==="Oracle") {
-        //document.getElementById("demo").innerHTML = "Its ORACLE";
         var oracleCost={{ form2.oracle}};
     }
     else if(os ==="SQL"){
-        //document.getElementById("demo").innerHTML = "Its SQL";
         var sqlcost={{ form2.sql }};
     }
-    */
+
     //Total Cost
     totalamount = QuotaCost + PerAppNetworkCost + opCost;
 
