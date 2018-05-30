@@ -16,72 +16,75 @@ function GetSelectedItem(el)
 }
 
 function generateAmount() {
-
-
     var TotalCost={{ form2.totalDC }};
     var TotalvCPU ={{ form2.totalvCPU }};
     var TotalRAM = {{ form2.totalRAM }};
     var TotalStorageCost ={{ form2.totalStorageCost }};
     var TotalCapacity ={{ form2.totalStorage }};
 
+ //Network Cost
+    var TotalNetworkCost = {{ form2.totalNetwork }};
+    //var PerAppUtilization = document.getElementById("id_RAM").value * document.getElementById("id_vCPU").value;
+    //var PerAppUtilRatio = PerAppUtilization/(TotalvCPU*TotalRAM);
+    //var PerAppNetworkCost =  PerAppUtilRatio * TotalNetworkCost ;
+    //Operational Cost
+    var opCost = {{ form2.LMF }};
+    var TotalServercost = {{ form2.totalServer }};
+    var OverallCost = TotalServercost + TotalNetworkCost + opCost;
+
     //Quota Cost
-    var ratio = (TotalvCPU/TotalRAM);
-    var TotalCostRAM =(TotalCost/(1+ratio));
-    var OneGBRAM= (TotalCostRAM/TotalRAM);
-    var OnevCPU = ((ratio* TotalCostRAM)/TotalvCPU);
+    //var ratio = (TotalvCPU/TotalRAM);
+    //var TotalCostRAM =(TotalCost/(1+ratio));
+    var OneGBRAM= (OverallCost/(TotalRAM + TotalvCPU));
+    var OnevCPU = OneGBRAM;
     var storageCost =(TotalStorageCost/TotalCapacity);
     var QuotaCost = OneGBRAM * document.getElementById("id_RAM").value + OnevCPU*document.getElementById("id_vCPU").value + storageCost * document.getElementById("id_storage").value;
-    //Network Cost
-    var TotalNetworkCost = {{ form2.totalNetwork }};
-    var PerAppUtilization = document.getElementById("id_RAM").value * document.getElementById("id_vCPU").value;
-    var PerAppUtilRatio = PerAppUtilization/(TotalvCPU*TotalRAM);
-    var PerAppNetworkCost =  PerAppUtilRatio * TotalNetworkCost ;
 
-
-    //Operational Cost
-    var opCost = {{ form2.LMF }}
+    console.log(QuotaCost);
 
 
     //os
 
     os=GetSelectedItem("id_os");
-
+    var osCost = 0;
+    var osCpu = 0;
     if(os === "Windows") {
-        var windowsCost={{ form2.microsoft }};
+         osCost={{ form2.microsoft }};
+         osCpu = 1096;
     }
     else if(os ==="RHEL"){
-        var rhelcost={{ form2.redhat }};
+         osCost={{ form2.redhat }};
+         osCpu = 1866;
     }
     else if(os ==="Suse")
     {
-        var suseCost={{ form2.suse }}
+         osCost={{ form2.suse }};
+         osCpu = 245;
     }
     else {
-    var other=0
+        osCost={{ form2.suse }};
+        osCpu = 122;
     }
-
-    //dr
-
-    dr=GetSelectedItem("id_dr");
-    if(dr ==="Yes") {
-        var a=1;
-    }
-    else {
-        var b=2;
-    }
-
+    var finalOsCost = ( osCost * document.getElementById("id_vCPU").value ) / osCpu ;
+    console.log(finalOsCost);
     //db
     db=GetSelectedItem("id_db");
-    if(os ==="Oracle") {
-        var oracleCost={{ form2.oracle}};
+    var dbCost = 0;
+    var dbCpu = 0;
+    if(db ==="Oracle") {
+         dbCost= {{ form2.oracle }};
+         dbCpu = 177;
     }
-    else if(os ==="SQL"){
-        var sqlcost={{ form2.sql }};
+    else if(db ==="SQL"){
+         dbCost = {{ form2.sql }};
+         dbCpu = 131;
     }
-
+    console.log(dbCost);
+    console.log(dbCpu);
+    var finalDbCost = ( dbCost * document.getElementById("id_vCPU").value ) / dbCpu ;
+    console.log(finalDbCost);
     //Total Cost
-    totalamount = QuotaCost + PerAppNetworkCost + opCost;
-
+    totalamount = QuotaCost + finalDbCost + finalOsCost;
     document.getElementById("id_amount").value =toInt(totalamount);
 
 }
